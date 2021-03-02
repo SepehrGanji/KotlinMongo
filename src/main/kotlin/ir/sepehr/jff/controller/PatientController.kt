@@ -27,8 +27,8 @@ class PatientController(
     }
 
     @PostMapping
-    fun createTask(@RequestBody request: PatientReq): ResponseEntity<Patient> {
-        val task = patientsRepository.save(Patient(
+    fun createPatient(@RequestBody request: PatientReq): ResponseEntity<Patient> {
+        val pat = patientsRepository.save(Patient(
             name = request.name,
             description = request.description
         ))
