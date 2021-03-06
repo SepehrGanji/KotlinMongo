@@ -1,5 +1,6 @@
 package ir.sepehr.jff.controller
 
+import ir.sepehr.jff.config.TenantContext
 import ir.sepehr.jff.document.Patient
 import ir.sepehr.jff.document.PatientReq
 import ir.sepehr.jff.repository.PatientRepository
@@ -14,20 +15,16 @@ class PatientController(
     private val patientsRepository: PatientRepository
 ) {
 
-    @GetMapping
-    fun getAllPatients(): ResponseEntity<List<Patient>> {
+    @GetMapping("/{tenant}")
+    fun getAllPatients(@PathVariable tenant: String): ResponseEntity<List<Patient>> {
+        TenantContext.setCurrentTenant(tenant)
         val patients = patientsRepository.findAll()
         return ResponseEntity.ok(patients)
     }
-
-    @GetMapping("/{id}")
-    fun getOnePatient(@PathVariable("id") id: String): ResponseEntity<Patient> {
-        val patient = patientsRepository.findOneById(ObjectId(id))
-        return ResponseEntity.ok(patient)
-    }
-
+    
     @PostMapping
-    fun createPatient(@RequestBody request: PatientReq): ResponseEntity<Patient> {
+    fun createPatient(@RequestParam tenant: String, @RequestBody request: PatientReq): ResponseEntity<Patient> {
+        TenantContext.setCurrentTenant(tenant)
         val pat = patientsRepository.save(Patient(
             name = request.name,
             description = request.description
