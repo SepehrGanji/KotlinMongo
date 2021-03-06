@@ -32,6 +32,6 @@ class PatientController(
             name = request.name,
             description = request.description
         ))
-        return ResponseEntity(task, HttpStatus.CREATED)
+        return ResponseEntity(pat, HttpStatus.CREATED)
     }
 }
